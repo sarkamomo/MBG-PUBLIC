@@ -1,0 +1,2063 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dapur MBG — Makan Bergizi Gratis</title>
+  <style>
+    /* ============================================
+       RESET & BASE
+       ============================================ */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --green-primary: #2ecc71;
+      --green-dark: #27ae60;
+      --green-darker: #1e8449;
+      --green-light: #a9dfbf;
+      --green-lighter: #d5f5e3;
+      --white: #ffffff;
+      --gray-light: #f8f9fa;
+      --gray-medium: #ecf0f1;
+      --gray-text: #5d6d7e;
+      --dark-text: #2c3e50;
+      --shadow-sm: 0 2px 8px rgba(0,0,0,0.08);
+      --shadow-md: 0 4px 16px rgba(0,0,0,0.12);
+      --shadow-lg: 0 8px 32px rgba(0,0,0,0.15);
+      --radius: 12px;
+      --radius-lg: 20px;
+      --transition: 0.3s ease;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      font-size: 16px;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: var(--dark-text);
+      background: var(--white);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    ul {
+      list-style: none;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    .container {
+      width: 90%;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .section-title {
+      text-align: center;
+      margin-bottom: 1rem;
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--dark-text);
+      position: relative;
+    }
+
+    .section-title span {
+      color: var(--green-primary);
+    }
+
+    .section-subtitle {
+      text-align: center;
+      color: var(--gray-text);
+      font-size: 1.05rem;
+      margin-bottom: 2.5rem;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    section {
+      padding: 5rem 0;
+    }
+
+    /* ============================================
+       NAVBAR
+       ============================================ */
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 1000;
+      background: rgba(255, 255, 255, 0.97);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      box-shadow: var(--shadow-sm);
+      transition: box-shadow var(--transition);
+    }
+
+    .navbar.scrolled {
+      box-shadow: var(--shadow-md);
+    }
+
+    .navbar .container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 70px;
+    }
+
+    .navbar-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 800;
+      font-size: 1.4rem;
+      color: var(--green-dark);
+    }
+
+    .navbar-logo .logo-icon {
+      width: 42px;
+      height: 42px;
+      background: linear-gradient(135deg, var(--green-primary), var(--green-dark));
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      color: white;
+      box-shadow: 0 2px 8px rgba(46, 204, 113, 0.4);
+    }
+
+    .navbar-logo .logo-text small {
+      display: block;
+      font-size: 0.55rem;
+      font-weight: 500;
+      color: var(--gray-text);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .nav-menu {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .nav-menu a {
+      padding: 8px 18px;
+      border-radius: 8px;
+      font-weight: 500;
+      font-size: 0.95rem;
+      color: var(--gray-text);
+      transition: all var(--transition);
+      position: relative;
+    }
+
+    .nav-menu a:hover,
+    .nav-menu a.active {
+      color: var(--green-dark);
+      background: var(--green-lighter);
+    }
+
+    .nav-menu a.cta-btn {
+      background: linear-gradient(135deg, var(--green-primary), var(--green-dark));
+      color: white;
+      font-weight: 600;
+    }
+
+    .nav-menu a.cta-btn:hover {
+      background: linear-gradient(135deg, var(--green-dark), var(--green-darker));
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(46, 204, 113, 0.4);
+    }
+
+    /* Hamburger */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 8px;
+      border-radius: 8px;
+      transition: background var(--transition);
+      background: none;
+      border: none;
+    }
+
+    .hamburger:hover {
+      background: var(--gray-medium);
+    }
+
+    .hamburger span {
+      display: block;
+      width: 24px;
+      height: 2.5px;
+      background: var(--dark-text);
+      border-radius: 2px;
+      transition: all var(--transition);
+    }
+
+    .hamburger.active span:nth-child(1) {
+      transform: rotate(45deg) translate(5px, 5px);
+    }
+
+    .hamburger.active span:nth-child(2) {
+      opacity: 0;
+    }
+
+    .hamburger.active span:nth-child(3) {
+      transform: rotate(-45deg) translate(5px, -5px);
+    }
+
+    /* ============================================
+       HERO SECTION
+       ============================================ */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      background: linear-gradient(135deg, #e8f8f0 0%, #d5f5e3 30%, #a9dfbf 70%, #82e0aa 100%);
+      overflow: hidden;
+      padding-top: 70px;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -20%;
+      width: 800px;
+      height: 800px;
+      background: radial-gradient(circle, rgba(46, 204, 113, 0.15) 0%, transparent 70%);
+      border-radius: 50%;
+      animation: float 8s ease-in-out infinite;
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: -30%;
+      left: -10%;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(39, 174, 96, 0.1) 0%, transparent 70%);
+      border-radius: 50%;
+      animation: float 10s ease-in-out infinite reverse;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0) scale(1); }
+      50% { transform: translateY(-40px) scale(1.05); }
+    }
+
+    /* Decorative food emojis floating */
+    .hero-decor {
+      position: absolute;
+      font-size: 3rem;
+      opacity: 0.15;
+      animation: floatEmoji 12s ease-in-out infinite;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .hero-decor:nth-child(1) { top: 15%; left: 8%; animation-delay: 0s; }
+    .hero-decor:nth-child(2) { top: 25%; right: 10%; animation-delay: 2s; font-size: 2.5rem; }
+    .hero-decor:nth-child(3) { bottom: 20%; left: 15%; animation-delay: 4s; font-size: 2rem; }
+    .hero-decor:nth-child(4) { bottom: 30%; right: 8%; animation-delay: 6s; }
+    .hero-decor:nth-child(5) { top: 50%; left: 5%; animation-delay: 3s; font-size: 2rem; }
+
+    @keyframes floatEmoji {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      25% { transform: translateY(-20px) rotate(5deg); }
+      75% { transform: translateY(10px) rotate(-5deg); }
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      max-width: 800px;
+      padding: 2rem;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255,255,255,0.8);
+      backdrop-filter: blur(10px);
+      padding: 8px 20px;
+      border-radius: 50px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--green-dark);
+      margin-bottom: 1.5rem;
+      border: 1px solid rgba(46, 204, 113, 0.2);
+    }
+
+    .hero-badge .dot {
+      width: 8px;
+      height: 8px;
+      background: var(--green-primary);
+      border-radius: 50%;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(1.5); }
+    }
+
+    .hero h1 {
+      font-size: 3.2rem;
+      font-weight: 800;
+      line-height: 1.15;
+      margin-bottom: 1.2rem;
+      color: var(--dark-text);
+    }
+
+    .hero h1 .highlight {
+      color: var(--green-primary);
+      position: relative;
+    }
+
+    .hero h1 .highlight::after {
+      content: '';
+      position: absolute;
+      bottom: 2px;
+      left: 0;
+      width: 100%;
+      height: 8px;
+      background: rgba(46, 204, 113, 0.2);
+      border-radius: 4px;
+      z-index: -1;
+    }
+
+    .hero p {
+      font-size: 1.15rem;
+      color: var(--gray-text);
+      margin-bottom: 2.5rem;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 32px;
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      border: none;
+      transition: all var(--transition);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--green-primary), var(--green-dark));
+      color: white;
+      box-shadow: 0 4px 16px rgba(46, 204, 113, 0.35);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 24px rgba(46, 204, 113, 0.45);
+    }
+
+    .btn-outline {
+      background: rgba(255,255,255,0.8);
+      color: var(--green-dark);
+      border: 2px solid var(--green-primary);
+      backdrop-filter: blur(10px);
+    }
+
+    .btn-outline:hover {
+      background: var(--green-lighter);
+      transform: translateY(-2px);
+    }
+
+    /* Hero wave divider */
+    .hero-wave {
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 100%;
+      z-index: 3;
+    }
+
+    .hero-wave svg {
+      display: block;
+      width: 100%;
+      height: 80px;
+    }
+
+    /* ============================================
+       STATISTICS SECTION
+       ============================================ */
+    .stats {
+      background: var(--white);
+      padding: 4rem 0;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+    }
+
+    .stat-card {
+      text-align: center;
+      padding: 2.5rem 1.5rem;
+      background: var(--gray-light);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--gray-medium);
+      transition: all var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: linear-gradient(90deg, var(--green-primary), var(--green-dark));
+      transform: scaleX(0);
+      transition: transform var(--transition);
+    }
+
+    .stat-card:hover::before {
+      transform: scaleX(1);
+    }
+
+    .stat-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-md);
+      border-color: var(--green-light);
+    }
+
+    .stat-icon {
+      width: 64px;
+      height: 64px;
+      margin: 0 auto 1rem;
+      background: linear-gradient(135deg, var(--green-lighter), var(--green-light));
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8rem;
+    }
+
+    .stat-number {
+      font-size: 2.8rem;
+      font-weight: 800;
+      color: var(--green-dark);
+      margin-bottom: 0.3rem;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .stat-label {
+      font-size: 0.95rem;
+      color: var(--gray-text);
+      font-weight: 500;
+    }
+
+    /* ============================================
+       MENU HARI INI
+       ============================================ */
+    .menu-section {
+      background: var(--gray-light);
+    }
+
+    .menu-filters {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 2.5rem;
+    }
+
+    .filter-btn {
+      padding: 8px 20px;
+      border-radius: 50px;
+      border: 2px solid var(--gray-medium);
+      background: var(--white);
+      color: var(--gray-text);
+      font-weight: 500;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all var(--transition);
+    }
+
+    .filter-btn:hover {
+      border-color: var(--green-primary);
+      color: var(--green-dark);
+    }
+
+    .filter-btn.active {
+      background: var(--green-primary);
+      border-color: var(--green-primary);
+      color: white;
+      box-shadow: 0 2px 8px rgba(46, 204, 113, 0.3);
+    }
+
+    .search-box {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 2rem;
+    }
+
+    .search-box input {
+      width: 100%;
+      max-width: 450px;
+      padding: 12px 20px;
+      padding-left: 44px;
+      border: 2px solid var(--gray-medium);
+      border-radius: 50px;
+      font-size: 0.95rem;
+      background: var(--white);
+      color: var(--dark-text);
+      transition: all var(--transition);
+      outline: none;
+    }
+
+    .search-box input:focus {
+      border-color: var(--green-primary);
+      box-shadow: 0 0 0 4px rgba(46, 204, 113, 0.15);
+    }
+
+    .search-box {
+      position: relative;
+    }
+
+    .search-box .search-icon {
+      position: absolute;
+      left: 18px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 1.1rem;
+      color: var(--gray-text);
+      pointer-events: none;
+    }
+
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .menu-card {
+      background: var(--white);
+      border-radius: var(--radius);
+      overflow: hidden;
+      border: 1px solid var(--gray-medium);
+      transition: all var(--transition);
+      animation: fadeInUp 0.5s ease forwards;
+    }
+
+    .menu-card:hover {
+      transform: translateY(-6px);
+      box-shadow: var(--shadow-lg);
+      border-color: var(--green-light);
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .menu-card.hidden {
+      display: none;
+    }
+
+    .menu-card-img {
+      width: 100%;
+      height: 180px;
+      background: linear-gradient(135deg, var(--green-lighter), var(--green-light));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 4rem;
+      position: relative;
+    }
+
+    .menu-card-img .calorie-badge {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: rgba(255,255,255,0.95);
+      backdrop-filter: blur(10px);
+      padding: 4px 12px;
+      border-radius: 50px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--green-dark);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .menu-card-body {
+      padding: 1.2rem;
+    }
+
+    .menu-card-body h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 0.4rem;
+      color: var(--dark-text);
+    }
+
+    .menu-card-body .meal-type {
+      font-size: 0.8rem;
+      color: var(--green-primary);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 0.6rem;
+    }
+
+    .menu-card-body p {
+      font-size: 0.85rem;
+      color: var(--gray-text);
+      margin-bottom: 0.8rem;
+      line-height: 1.5;
+    }
+
+    .allergen-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .allergen-tag {
+      padding: 3px 10px;
+      border-radius: 50px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      background: #fef9e7;
+      color: #f39c12;
+      border: 1px solid #fdebd0;
+    }
+
+    .allergen-tag.safe {
+      background: #eafaf1;
+      color: var(--green-dark);
+      border-color: #a9dfbf;
+    }
+
+    .no-results {
+      text-align: center;
+      padding: 3rem;
+      color: var(--gray-text);
+      font-size: 1.1rem;
+      grid-column: 1 / -1;
+    }
+
+    .no-results .emoji {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      display: block;
+    }
+
+    /* ============================================
+       TRANSPARANSI
+       ============================================ */
+    .transparansi {
+      background: var(--white);
+    }
+
+    .budget-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: start;
+    }
+
+    .budget-chart {
+      background: var(--gray-light);
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+      border: 1px solid var(--gray-medium);
+    }
+
+    .budget-chart h3 {
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      color: var(--dark-text);
+    }
+
+    .budget-bar-group {
+      margin-bottom: 1.2rem;
+    }
+
+    .budget-bar-label {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 6px;
+      font-size: 0.9rem;
+    }
+
+    .budget-bar-label .label-name {
+      font-weight: 600;
+      color: var(--dark-text);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .budget-bar-label .label-name .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    .budget-bar-label .label-value {
+      font-weight: 700;
+      color: var(--green-dark);
+    }
+
+    .budget-bar {
+      width: 100%;
+      height: 12px;
+      background: var(--gray-medium);
+      border-radius: 6px;
+      overflow: hidden;
+    }
+
+    .budget-bar-fill {
+      height: 100%;
+      border-radius: 6px;
+      width: 0;
+      transition: width 1.5s ease;
+    }
+
+    .budget-table-wrapper {
+      background: var(--gray-light);
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+      border: 1px solid var(--gray-medium);
+      overflow-x: auto;
+    }
+
+    .budget-table-wrapper h3 {
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      color: var(--dark-text);
+    }
+
+    .budget-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .budget-table thead th {
+      background: var(--green-primary);
+      color: white;
+      padding: 12px 16px;
+      text-align: left;
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .budget-table thead th:first-child {
+      border-radius: 8px 0 0 0;
+    }
+
+    .budget-table thead th:last-child {
+      border-radius: 0 8px 0 0;
+    }
+
+    .budget-table tbody td {
+      padding: 12px 16px;
+      font-size: 0.9rem;
+      border-bottom: 1px solid var(--gray-medium);
+      color: var(--dark-text);
+    }
+
+    .budget-table tbody tr:last-child td {
+      border-bottom: none;
+      font-weight: 700;
+      background: var(--green-lighter);
+      color: var(--green-darker);
+    }
+
+    .budget-table tbody tr:last-child td:first-child {
+      border-radius: 0 0 0 8px;
+    }
+
+    .budget-table tbody tr:last-child td:last-child {
+      border-radius: 0 0 8px 0;
+    }
+
+    .budget-table tbody tr:hover {
+      background: var(--green-lighter);
+    }
+
+    /* ============================================
+       FORMULIR PENGADUAN
+       ============================================ */
+    .pengaduan {
+      background: var(--gray-light);
+    }
+
+    .form-wrapper {
+      max-width: 650px;
+      margin: 0 auto;
+      background: var(--white);
+      border-radius: var(--radius-lg);
+      padding: 2.5rem;
+      box-shadow: var(--shadow-md);
+      border: 1px solid var(--gray-medium);
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group label {
+      display: block;
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: var(--dark-text);
+      margin-bottom: 6px;
+    }
+
+    .form-group label .required {
+      color: #e74c3c;
+    }
+
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      width: 100%;
+      padding: 12px 16px;
+      border: 2px solid var(--gray-medium);
+      border-radius: 10px;
+      font-size: 0.95rem;
+      font-family: inherit;
+      color: var(--dark-text);
+      background: var(--white);
+      transition: all var(--transition);
+      outline: none;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+      border-color: var(--green-primary);
+      box-shadow: 0 0 0 4px rgba(46, 204, 113, 0.12);
+    }
+
+    .form-group input.error,
+    .form-group textarea.error {
+      border-color: #e74c3c;
+      box-shadow: 0 0 0 4px rgba(231, 76, 60, 0.1);
+    }
+
+    .form-group input.valid,
+    .form-group textarea.valid {
+      border-color: var(--green-primary);
+    }
+
+    .error-message {
+      font-size: 0.8rem;
+      color: #e74c3c;
+      margin-top: 4px;
+      display: none;
+      font-weight: 500;
+    }
+
+    .error-message.show {
+      display: block;
+      animation: shake 0.3s ease;
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-5px); }
+      75% { transform: translateX(5px); }
+    }
+
+    .form-group textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .form-submit {
+      text-align: center;
+      margin-top: 2rem;
+    }
+
+    .form-submit .btn {
+      width: 100%;
+      justify-content: center;
+      padding: 16px 32px;
+      font-size: 1.05rem;
+    }
+
+    .form-info {
+      text-align: center;
+      margin-top: 1rem;
+      font-size: 0.8rem;
+      color: var(--gray-text);
+    }
+
+    .form-info svg {
+      vertical-align: middle;
+      margin-right: 4px;
+    }
+
+    /* Success notification */
+    .notification {
+      position: fixed;
+      top: 90px;
+      right: 20px;
+      background: var(--white);
+      border: 2px solid var(--green-primary);
+      border-radius: var(--radius);
+      padding: 1.2rem 1.5rem;
+      box-shadow: var(--shadow-lg);
+      z-index: 2000;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      transform: translateX(120%);
+      transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+      max-width: 380px;
+    }
+
+    .notification.show {
+      transform: translateX(0);
+    }
+
+    .notification .notif-icon {
+      width: 40px;
+      height: 40px;
+      background: var(--green-lighter);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      flex-shrink: 0;
+    }
+
+    .notification .notif-text strong {
+      display: block;
+      font-size: 0.95rem;
+      color: var(--dark-text);
+    }
+
+    .notification .notif-text span {
+      font-size: 0.8rem;
+      color: var(--gray-text);
+    }
+
+    /* ============================================
+       FOOTER
+       ============================================ */
+    .footer {
+      background: var(--dark-text);
+      color: rgba(255,255,255,0.7);
+      padding: 3rem 0 1.5rem;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      gap: 3rem;
+      margin-bottom: 2rem;
+    }
+
+    .footer-brand .logo {
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: var(--green-primary);
+      margin-bottom: 0.8rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .footer-brand p {
+      font-size: 0.9rem;
+      line-height: 1.7;
+      max-width: 350px;
+    }
+
+    .footer h4 {
+      color: white;
+      font-size: 1rem;
+      margin-bottom: 1rem;
+      font-weight: 700;
+    }
+
+    .footer ul li {
+      margin-bottom: 8px;
+    }
+
+    .footer ul li a {
+      font-size: 0.9rem;
+      transition: color var(--transition);
+    }
+
+    .footer ul li a:hover {
+      color: var(--green-primary);
+    }
+
+    .footer-bottom {
+      border-top: 1px solid rgba(255,255,255,0.1);
+      padding-top: 1.5rem;
+      text-align: center;
+      font-size: 0.85rem;
+    }
+
+    /* ============================================
+       SCROLL TO TOP
+       ============================================ */
+    .scroll-top {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      width: 48px;
+      height: 48px;
+      background: linear-gradient(135deg, var(--green-primary), var(--green-dark));
+      color: white;
+      border: none;
+      border-radius: 50%;
+      font-size: 1.2rem;
+      cursor: pointer;
+      box-shadow: var(--shadow-md);
+      z-index: 900;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(20px);
+      transition: all var(--transition);
+    }
+
+    .scroll-top.visible {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+
+    .scroll-top:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    /* ============================================
+       RESPONSIVE
+       ============================================ */
+    @media (max-width: 992px) {
+      .budget-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .footer-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .hamburger {
+        display: flex;
+      }
+
+      .nav-menu {
+        position: fixed;
+        top: 70px;
+        left: 0;
+        width: 100%;
+        background: rgba(255,255,255,0.98);
+        backdrop-filter: blur(10px);
+        flex-direction: column;
+        padding: 1.5rem;
+        gap: 4px;
+        box-shadow: var(--shadow-md);
+        transform: translateY(-120%);
+        opacity: 0;
+        transition: all 0.4s ease;
+        border-bottom: 2px solid var(--green-lighter);
+      }
+
+      .nav-menu.open {
+        transform: translateY(0);
+        opacity: 1;
+      }
+
+      .nav-menu a {
+        width: 100%;
+        text-align: center;
+        padding: 12px;
+        font-size: 1rem;
+      }
+
+      .hero h1 {
+        font-size: 2.2rem;
+      }
+
+      .hero p {
+        font-size: 1rem;
+      }
+
+      .stats-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+
+      .stat-card {
+        padding: 1.5rem;
+      }
+
+      .stat-number {
+        font-size: 2.2rem;
+      }
+
+      .section-title {
+        font-size: 1.6rem;
+      }
+
+      section {
+        padding: 3.5rem 0;
+      }
+
+      .menu-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+
+      .form-wrapper {
+        padding: 1.5rem;
+      }
+
+      .footer-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+
+      .hero-buttons {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .btn {
+        width: 100%;
+        max-width: 300px;
+        justify-content: center;
+      }
+
+      .notification {
+        left: 15px;
+        right: 15px;
+        max-width: none;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .hero h1 {
+        font-size: 1.8rem;
+      }
+
+      .hero-badge {
+        font-size: 0.75rem;
+      }
+
+      .stat-number {
+        font-size: 1.8rem;
+      }
+
+      .menu-filters {
+        gap: 6px;
+      }
+
+      .filter-btn {
+        padding: 6px 14px;
+        font-size: 0.8rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ============================================
+       NAVBAR
+       ============================================ -->
+  <nav class="navbar" id="navbar">
+    <div class="container">
+      <a href="#beranda" class="navbar-logo">
+        <div class="logo-icon">🍽️</div>
+        <div class="logo-text">
+          Dapur MBG
+          <small>Makan Bergizi Gratis</small>
+        </div>
+      </a>
+
+      <ul class="nav-menu" id="navMenu">
+        <li><a href="#beranda" class="active">Beranda</a></li>
+        <li><a href="#menu-gizi">Menu Gizi</a></li>
+        <li><a href="#transparansi">Transparansi</a></li>
+        <li><a href="#pengaduan" class="cta-btn">📢 Aduan</a></li>
+      </ul>
+
+      <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ============================================
+       HERO SECTION
+       ============================================ -->
+  <section class="hero" id="beranda">
+    <div class="hero-decor">🥗</div>
+    <div class="hero-decor">🍚</div>
+    <div class="hero-decor">🥛</div>
+    <div class="hero-decor">🍎</div>
+    <div class="hero-decor">🥦</div>
+
+    <div class="hero-content">
+      <div class="hero-badge">
+        <span class="dot"></span>
+        Program Nasional 2026
+      </div>
+      <h1>
+        Gizi Seimbang untuk<br>
+        <span class="highlight">Generasi Cerdas</span> Indonesia
+      </h1>
+      <p>
+        Dapur MBG menyediakan makan bergizi gratis bagi siswa di seluruh Indonesia. 
+        Nutrisi terbaik untuk mendukung tumbuh kembang dan prestasi anak bangsa.
+      </p>
+      <div class="hero-buttons">
+        <a href="#menu-gizi" class="btn btn-primary">
+          🍽️ Lihat Menu Hari Ini
+        </a>
+        <a href="#pengaduan" class="btn btn-outline">
+          💬 Sampaikan Masukan
+        </a>
+      </div>
+    </div>
+
+    <div class="hero-wave">
+      <svg viewBox="0 0 1440 80" preserveAspectRatio="none">
+        <path fill="#ffffff" d="M0,40 C360,80 720,0 1080,40 C1260,60 1380,50 1440,40 L1440,80 L0,80 Z"/>
+      </svg>
+    </div>
+  </section>
+
+  <!-- ============================================
+       STATISTIK CEPAT
+       ============================================ -->
+  <section class="stats" id="statistik">
+    <div class="container">
+      <h2 class="section-title">Dampak <span>Program</span></h2>
+      <p class="section-subtitle">
+        Capaian nyata Dapur MBG dalam menyediakan nutrisi terbaik bagi siswa Indonesia
+      </p>
+      <div class="stats-grid">
+        <div class="stat-card" data-target="1250000" data-suffix="+">
+          <div class="stat-icon">🍱</div>
+          <div class="stat-number" id="statPorsi">0</div>
+          <div class="stat-label">Total Porsi Terdistribusi</div>
+        </div>
+        <div class="stat-card" data-target="8450" data-suffix="">
+          <div class="stat-icon">🏫</div>
+          <div class="stat-number" id="statSekolah">0</div>
+          <div class="stat-label">Sekolah Aktif Berpartisipasi</div>
+        </div>
+        <div class="stat-card" data-target="34" data-suffix="">
+          <div class="stat-icon">🗺️</div>
+          <div class="stat-number" id="statWilayah">0</div>
+          <div class="stat-label">Provinsi Terjangkau</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================
+       MENU HARI INI
+       ============================================ -->
+  <section class="menu-section" id="menu-gizi">
+    <div class="container">
+      <h2 class="section-title">Menu <span>Hari Ini</span></h2>
+      <p class="section-subtitle">
+        Menu bergizi seimbang yang disiapkan oleh dapur MBG untuk siswa
+      </p>
+
+      <div class="search-box">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="searchInput" placeholder="Cari menu makanan...">
+      </div>
+
+      <div class="menu-filters" id="menuFilters">
+        <button class="filter-btn active" data-filter="semua">Semua</button>
+        <button class="filter-btn" data-filter="bebas-telur">🚫 Bebas Telur</button>
+        <button class="filter-btn" data-filter="bebas-susu">🚫 Bebas Susu</button>
+        <button class="filter-btn" data-filter="bebas-kacang">🚫 Bebas Kacang</button>
+        <button class="filter-btn" data-filter="vegetarian">🥬 Vegetarian</button>
+        <button class="filter-btn" data-filter="tinggi-protein">💪 Tinggi Protein</button>
+      </div>
+
+      <div class="menu-grid" id="menuGrid">
+        <!-- Cards will be injected by JavaScript -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================
+       TRANSPARANSI
+       ============================================ -->
+  <section class="transparansi" id="transparansi">
+    <div class="container">
+      <h2 class="section-title">Transparansi <span>Anggaran</span></h2>
+      <p class="section-subtitle">
+        Informasi alokasi dana program MBG yang transparan dan akuntabel
+      </p>
+
+      <div class="budget-grid">
+        <div class="budget-chart">
+          <h3>📊 Alokasi Anggaran per Kategori</h3>
+          <div class="budget-bar-group">
+            <div class="budget-bar-label">
+              <span class="label-name">
+                <span class="dot" style="background:#2ecc71;"></span> Bahan Makanan
+              </span>
+              <span class="label-value">55%</span>
+            </div>
+            <div class="budget-bar">
+              <div class="budget-bar-fill" data-width="55" style="background: linear-gradient(90deg, #2ecc71, #27ae60);"></div>
+            </div>
+          </div>
+          <div class="budget-bar-group">
+            <div class="budget-bar-label">
+              <span class="label-name">
+                <span class="dot" style="background:#3498db;"></span> Operasional Dapur
+              </span>
+              <span class="label-value">18%</span>
+            </div>
+            <div class="budget-bar">
+              <div class="budget-bar-fill" data-width="18" style="background: linear-gradient(90deg, #3498db, #2980b9);"></div>
+            </div>
+          </div>
+          <div class="budget-bar-group">
+            <div class="budget-bar-label">
+              <span class="label-name">
+                <span class="dot" style="background:#e67e22;"></span> Logistik & Distribusi
+              </span>
+              <span class="label-value">12%</span>
+            </div>
+            <div class="budget-bar">
+              <div class="budget-bar-fill" data-width="12" style="background: linear-gradient(90deg, #e67e22, #d35400);"></div>
+            </div>
+          </div>
+          <div class="budget-bar-group">
+            <div class="budget-bar-label">
+              <span class="label-name">
+                <span class="dot" style="background:#9b59b6;"></span> SDM & Tenaga Dapur
+              </span>
+              <span class="label-value">10%</span>
+            </div>
+            <div class="budget-bar">
+              <div class="budget-bar-fill" data-width="10" style="background: linear-gradient(90deg, #9b59b6, #8e44ad);"></div>
+            </div>
+          </div>
+          <div class="budget-bar-group">
+            <div class="budget-bar-label">
+              <span class="label-name">
+                <span class="dot" style="background:#e74c3c;"></span> Monitoring & Evaluasi
+              </span>
+              <span class="label-value">5%</span>
+            </div>
+            <div class="budget-bar">
+              <div class="budget-bar-fill" data-width="5" style="background: linear-gradient(90deg, #e74c3c, #c0392b);"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="budget-table-wrapper">
+          <h3>📋 Rincian Anggaran Triwulan I 2026</h3>
+          <table class="budget-table">
+            <thead>
+              <tr>
+                <th>Kategori</th>
+                <th>Alokasi</th>
+                <th>Realisasi</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Bahan Makanan</td>
+                <td>Rp 5,5 M</td>
+                <td>Rp 5,2 M</td>
+              </tr>
+              <tr>
+                <td>Operasional Dapur</td>
+                <td>Rp 1,8 M</td>
+                <td>Rp 1,7 M</td>
+              </tr>
+              <tr>
+                <td>Logistik & Distribusi</td>
+                <td>Rp 1,2 M</td>
+                <td>Rp 1,1 M</td>
+              </tr>
+              <tr>
+                <td>SDM & Tenaga Dapur</td>
+                <td>Rp 1,0 M</td>
+                <td>Rp 0,9 M</td>
+              </tr>
+              <tr>
+                <td>Monitoring & Evaluasi</td>
+                <td>Rp 0,5 M</td>
+                <td>Rp 0,4 M</td>
+              </tr>
+              <tr>
+                <td><strong>TOTAL</strong></td>
+                <td><strong>Rp 10,0 M</strong></td>
+                <td><strong>Rp 9,3 M</strong></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================
+       FORMULIR PENGADUAN
+       ============================================ -->
+  <section class="pengaduan" id="pengaduan">
+    <div class="container">
+      <h2 class="section-title">Formulir <span>Pengaduan</span></h2>
+      <p class="section-subtitle">
+        Sampaikan masukan, keluhan, atau laporan Anda terkait program Dapur MBG
+      </p>
+
+      <div class="form-wrapper">
+        <form id="aduanForm" novalidate>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="nama">Nama Lengkap <span class="required">*</span></label>
+              <input type="text" id="nama" name="nama" placeholder="Masukkan nama lengkap" required>
+              <div class="error-message" id="namaError">Nama lengkap wajib diisi</div>
+            </div>
+            <div class="form-group">
+              <label for="hp">Nomor HP / WhatsApp <span class="required">*</span></label>
+              <input type="tel" id="hp" name="hp" placeholder="Contoh: 08123456789" required>
+              <div class="error-message" id="hpError">Nomor HP wajib diisi dengan benar</div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="email">Email (opsional)</label>
+            <input type="email" id="email" name="email" placeholder="contoh@email.com">
+          </div>
+
+          <div class="form-group">
+            <label for="kategori">Kategori Pengaduan <span class="required">*</span></label>
+            <select id="kategori" name="kategori">
+              <option value="">— Pilih Kategori —</option>
+              <option value="kualitas">Kualitas Makanan</option>
+              <option value="distribusi">Masalah Distribusi</option>
+              <option value="kebersihan">Kebersihan & Higienitas</option>
+              <option value="alergi">Masalah Alergi</option>
+              <option value="saran">Saran & Masukan</option>
+              <option value="lainnya">Lainnya</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="pesan">Isi Pengaduan <span class="required">*</span></label>
+            <textarea id="pesan" name="pesan" placeholder="Jelaskan pengaduan atau masukan Anda secara detail..." required></textarea>
+            <div class="error-message" id="pesanError">Isi pengaduan tidak boleh kosong</div>
+          </div>
+
+          <div class="form-submit">
+            <button type="submit" class="btn btn-primary">
+              📤 Kirim Pengaduan
+            </button>
+          </div>
+
+          <div class="form-info">
+            🔒 Data Anda dilindungi dan hanya digunakan untuk keperluan perbaikan program.
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================
+       FOOTER
+       ============================================ -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="logo">🍽️ Dapur MBG</div>
+          <p>
+            Program Makan Bergizi Gratis merupakan inisiatif nasional untuk memastikan 
+            setiap siswa Indonesia mendapatkan asupan gizi seimbang guna mendukung 
+            pertumbuhan dan prestasi belajar.
+          </p>
+        </div>
+        <div>
+          <h4>Menu Cepat</h4>
+          <ul>
+            <li><a href="#beranda">Beranda</a></li>
+            <li><a href="#menu-gizi">Menu Gizi</a></li>
+            <li><a href="#transparansi">Transparansi</a></li>
+            <li><a href="#pengaduan">Pengaduan</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Kontak</h4>
+          <ul>
+            <li>📧 info@dapurmbg.go.id</li>
+            <li>📞 0800-123-4567</li>
+            <li>📍 Jakarta, Indonesia</li>
+            <li>🕐 Senin–Jumat, 08.00–16.00</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 Dapur MBG — Program Makan Bergizi Gratis. Hak cipta dilindungi.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scroll to Top -->
+  <button class="scroll-top" id="scrollTop" aria-label="Scroll to top">↑</button>
+
+  <!-- Notification -->
+  <div class="notification" id="notification">
+    <div class="notif-icon">✅</div>
+    <div class="notif-text">
+      <strong>Pengaduan Terkirim!</strong>
+      <span>Terima kasih atas masukan Anda.</span>
+    </div>
+  </div>
+
+  <!-- ============================================
+       JAVASCRIPT
+       ============================================ -->
+  <script>
+    // ============================================
+    // DATA MENU
+    // ============================================
+    const menuData = [
+      {
+        id: 1,
+        nama: "Nasi Merah + Ayam Bakar Madu",
+        tipe: "Menu Utama",
+        emoji: "🍗",
+        kalori: 520,
+        deskripsi: "Nasi merah organik dengan ayam bakar madu, disertai lalapan segar dan sambal terasi.",
+        alergi: ["Mengandung Kacang (sambal)"],
+        tags: ["bebas-telur", "bebas-susu", "tinggi-protein"]
+      },
+      {
+        id: 2,
+        nama: "Nasi Goreng Sayur + Telur Dadar",
+        tipe: "Menu Utama",
+        emoji: "🍳",
+        kalori: 480,
+        deskripsi: "Nasi goreng dengan campuran wortel, buncis, dan telur dadar tebal.",
+        alergi: ["Mengandung Telur"],
+        tags: ["bebas-susu", "bebas-kacang"]
+      },
+      {
+        id: 3,
+        nama: "Soto Ayam + Perkedel",
+        tipe: "Menu Utama",
+        emoji: "🍲",
+        kalori: 450,
+        deskripsi: "Soto ayam kuning hangat dengan perkedel kentang dan kerupuk.",
+        alergi: ["Mengandung Telur (perkedel)"],
+        tags: ["bebas-susu", "bebas-kacang", "tinggi-protein"]
+      },
+      {
+        id: 4,
+        nama: "Gado-Gado Siram Bumbu Kacang",
+        tipe: "Menu Utama",
+        emoji: "🥗",
+        kalori: 380,
+        deskripsi: "Sayuran segar rebus dengan bumbu kacang, lontong, dan kerupuk.",
+        alergi: ["Mengandung Kacang", "Mengandung Telur (lontong)"],
+        tags: ["vegetarian", "bebas-susu"]
+      },
+      {
+        id: 5,
+        nama: "Mie Goreng Spesial + Bakso",
+        tipe: "Menu Utama",
+        emoji: "🍜",
+        kalori: 510,
+        deskripsi: "Mie goreng dengan bakso sapi, sawi hijau, dan telur puyuh.",
+        alergi: ["Mengandung Telur", "Mengandung Gluten"],
+        tags: ["bebas-susu", "bebas-kacang", "tinggi-protein"]
+      },
+      {
+        id: 6,
+        nama: "Nasi Uduk + Tempe Orek",
+        tipe: "Menu Utama",
+        emoji: "🍚",
+        kalori: 420,
+        deskripsi: "Nasi uduk gurih dengan tempe orek kecap, bihun, dan sambal.",
+        alergi: ["Mengandung Kedelai"],
+        tags: ["vegetarian", "bebas-telur", "bebas-susu"]
+      },
+      {
+        id: 7,
+        nama: "Pepes Ikan + Sayur Asem",
+        tipe: "Menu Utama",
+        emoji: "🐟",
+        kalori: 390,
+        deskripsi: "Ikan pepes bumbu kuning dengan sayur asem dan nasi putih.",
+        alergi: ["Mengandung Ikan"],
+        tags: ["bebas-telur", "bebas-susu", "bebas-kacang", "tinggi-protein"]
+      },
+      {
+        id: 8,
+        nama: "Bubur Ayam Spesial",
+        tipe: "Menu Sarapan",
+        emoji: "🥣",
+        kalori: 350,
+        deskripsi: "Bubur ayam dengan suwiran ayam, cakwe, kerupuk, dan kecap.",
+        alergi: ["Mengandung Telur (cakwe)", "Mengandung Kacang (bawang goreng)"],
+        tags: ["bebas-susu"]
+      },
+      {
+        id: 9,
+        nama: "Smoothie Buah Segar",
+        tipe: "Minuman",
+        emoji: "🥤",
+        kalori: 180,
+        deskripsi: "Smoothie campuran pisang, stroberi, dan yogurt rendah lemak.",
+        alergi: ["Mengandung Susu"],
+        tags: ["bebas-telur", "bebas-kacang", "vegetarian"]
+      }
+    ];
+
+    // ============================================
+    // NAVBAR
+    // ============================================
+    const navbar = document.getElementById('navbar');
+    const hamburger = document.getElementById('hamburger');
+    const navMenu = document.getElementById('navMenu');
+    const navLinks = document.querySelectorAll('.nav-menu a');
+
+    // Toggle hamburger
+    hamburger.addEventListener('click', () => {
+      hamburger.classList.toggle('active');
+      navMenu.classList.toggle('open');
+    });
+
+    // Close menu on link click
+    navLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        hamburger.classList.remove('active');
+        navMenu.classList.remove('open');
+      });
+    });
+
+    // Active nav link on scroll
+    const sections = document.querySelectorAll('section[id]');
+
+    function updateActiveNav() {
+      const scrollY = window.scrollY + 100;
+
+      sections.forEach(section => {
+        const sectionTop = section.offsetTop;
+        const sectionHeight = section.offsetHeight;
+        const sectionId = section.getAttribute('id');
+
+        if (scrollY >= sectionTop && scrollY < sectionTop + sectionHeight) {
+          navLinks.forEach(link => {
+            link.classList.remove('active');
+            if (link.getAttribute('href') === '#' + sectionId) {
+              link.classList.add('active');
+            }
+          });
+        }
+      });
+    }
+
+    // Navbar shadow on scroll
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        navbar.classList.add('scrolled');
+      } else {
+        navbar.classList.remove('scrolled');
+      }
+      updateActiveNav();
+    });
+
+    // ============================================
+    // COUNTER UP ANIMATION
+    // ============================================
+    function formatNumber(num) {
+      if (num >= 1000000) {
+        return (num / 1000000).toFixed(1).replace('.0', '') + ' Jt';
+      }
+      return num.toLocaleString('id-ID');
+    }
+
+    function animateCounter(element, target, suffix, duration) {
+      let start = 0;
+      const startTime = performance.now();
+
+      function update(currentTime) {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+
+        // Ease out cubic
+        const eased = 1 - Math.pow(1 - progress, 3);
+        const current = Math.floor(eased * target);
+
+        element.textContent = formatNumber(current) + suffix;
+
+        if (progress < 1) {
+          requestAnimationFrame(update);
+        }
+      }
+
+      requestAnimationFrame(update);
+    }
+
+    // Intersection Observer for counter
+    let countersAnimated = false;
+    const statsSection = document.getElementById('statistik');
+
+    const statsObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting && !countersAnimated) {
+          countersAnimated = true;
+
+          const statPorsi = document.getElementById('statPorsi');
+          const statSekolah = document.getElementById('statSekolah');
+          const statWilayah = document.getElementById('statWilayah');
+
+          animateCounter(statPorsi, 1250000, '+', 2000);
+          animateCounter(statSekolah, 8450, '', 2000);
+          animateCounter(statWilayah, 34, '', 1500);
+        }
+      });
+    }, { threshold: 0.3 });
+
+    statsObserver.observe(statsSection);
+
+    // ============================================
+    // MENU RENDERING & FILTERING
+    // ============================================
+    const menuGrid = document.getElementById('menuGrid');
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    const searchInput = document.getElementById('searchInput');
+    let activeFilter = 'semua';
+    let searchTerm = '';
+
+    function renderMenu() {
+      menuGrid.innerHTML = '';
+
+      const filtered = menuData.filter(item => {
+        // Filter by allergen/category
+        const matchFilter = activeFilter === 'semua' || item.tags.includes(activeFilter);
+
+        // Filter by search
+        const matchSearch = searchTerm === '' ||
+          item.nama.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          item.deskripsi.toLowerCase().includes(searchTerm.toLowerCase());
+
+        return matchFilter && matchSearch;
+      });
+
+      if (filtered.length === 0) {
+        menuGrid.innerHTML = `
+          <div class="no-results">
+            <span class="emoji">🔍</span>
+            Tidak ada menu yang ditemukan. Coba ubah filter atau kata kunci pencarian.
+          </div>
+        `;
+        return;
+      }
+
+      filtered.forEach((item, index) => {
+        const card = document.createElement('div');
+        card.className = 'menu-card';
+        card.style.animationDelay = `${index * 0.08}s`;
+
+        const allergenHTML = item.alergi.map(a =>
+          `<span class="allergen-tag">⚠️ ${a}</span>`
+        ).join('');
+
+        card.innerHTML = `
+          <div class="menu-card-img">
+            ${item.emoji}
+            <span class="calorie-badge">🔥 ${item.kalori} kkal</span>
+          </div>
+          <div class="menu-card-body">
+            <div class="meal-type">${item.tipe}</div>
+            <h3>${item.nama}</h3>
+            <p>${item.deskripsi}</p>
+            <div class="allergen-tags">
+              ${allergenHTML}
+            </div>
+          </div>
+        `;
+
+        menuGrid.appendChild(card);
+      });
+    }
+
+    // Filter button clicks
+    filterBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        filterBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        activeFilter = btn.dataset.filter;
+        renderMenu();
+      });
+    });
+
+    // Search input
+    searchInput.addEventListener('input', (e) => {
+      searchTerm = e.target.value.trim();
+      renderMenu();
+    });
+
+    // Initial render
+    renderMenu();
+
+    // ============================================
+    // BUDGET BAR ANIMATION
+    // ============================================
+    const budgetBars = document.querySelectorAll('.budget-bar-fill');
+    let barsAnimated = false;
+
+    const budgetObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting && !barsAnimated) {
+          barsAnimated = true;
+          budgetBars.forEach(bar => {
+            const width = bar.dataset.width;
+            bar.style.width = width + '%';
+          });
+        }
+      });
+    }, { threshold: 0.3 });
+
+    const budgetChart = document.querySelector('.budget-chart');
+    if (budgetChart) {
+      budgetObserver.observe(budgetChart);
+    }
+
+    // ============================================
+    // FORM VALIDATION & SUBMISSION
+    // ============================================
+    const aduanForm = document.getElementById('aduanForm');
+    const notification = document.getElementById('notification');
+
+    function showError(inputId, errorId) {
+      const input = document.getElementById(inputId);
+      const error = document.getElementById(errorId);
+      input.classList.add('error');
+      input.classList.remove('valid');
+      error.classList.add('show');
+    }
+
+    function showValid(inputId) {
+      const input = document.getElementById(inputId);
+      const error = document.getElementById(inputId + 'Error');
+      input.classList.remove('error');
+      input.classList.add('valid');
+      if (error) error.classList.remove('show');
+    }
+
+    function clearValidation(inputId) {
+      const input = document.getElementById(inputId);
+      input.classList.remove('error', 'valid');
+      const error = document.getElementById(inputId + 'Error');
+      if (error) error.classList.remove('show');
+    }
+
+    // Real-time validation on blur
+    document.getElementById('nama').addEventListener('blur', function() {
+      if (this.value.trim() === '') {
+        showError('nama', 'namaError');
+      } else {
+        showValid('nama');
+      }
+    });
+
+    document.getElementById('hp').addEventListener('blur', function() {
+      const hpRegex = /^[0-9+\-\s]{8,15}$/;
+      if (this.value.trim() === '' || !hpRegex.test(this.value.trim())) {
+        showError('hp', 'hpError');
+      } else {
+        showValid('hp');
+      }
+    });
+
+    document.getElementById('pesan').addEventListener('blur', function() {
+      if (this.value.trim() === '') {
+        showError('pesan', 'pesanError');
+      } else {
+        showValid('pesan');
+      }
+    });
+
+    // Clear error on input
+    ['nama', 'hp', 'pesan'].forEach(id => {
+      document.getElementById(id).addEventListener('input', function() {
+        if (this.value.trim() !== '') {
+          this.classList.remove('error');
+          const errorEl = document.getElementById(id + 'Error');
+          if (errorEl) errorEl.classList.remove('show');
+        }
+      });
+    });
+
+    aduanForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      let isValid = true;
+
+      // Validate nama
+      const nama = document.getElementById('nama').value.trim();
+      if (nama === '') {
+        showError('nama', 'namaError');
+        isValid = false;
+      } else {
+        showValid('nama');
+      }
+
+      // Validate hp
+      const hp = document.getElementById('hp').value.trim();
+      const hpRegex = /^[0-9+\-\s]{8,15}$/;
+      if (hp === '' || !hpRegex.test(hp)) {
+        showError('hp', 'hpError');
+        isValid = false;
+      } else {
+        showValid('hp');
+      }
+
+      // Validate pesan
+      const pesan = document.getElementById('pesan').value.trim();
+      if (pesan === '') {
+        showError('pesan', 'pesanError');
+        isValid = false;
+      } else {
+        showValid('pesan');
+      }
+
+      // Validate kategori
+      const kategori = document.getElementById('kategori').value;
+
+      if (isValid) {
+        // Simulate form submission
+        const submitBtn = aduanForm.querySelector('button[type="submit"]');
+        submitBtn.textContent = '⏳ Mengirim...';
+        submitBtn.disabled = true;
+
+        setTimeout(() => {
+          // Show notification
+          notification.classList.add('show');
+
+          // Reset form
+          aduanForm.reset();
+          ['nama', 'hp', 'pesan'].forEach(id => clearValidation(id));
+
+          submitBtn.textContent = '📤 Kirim Pengaduan';
+          submitBtn.disabled = false;
+
+          // Hide notification after 4 seconds
+          setTimeout(() => {
+            notification.classList.remove('show');
+          }, 4000);
+        }, 1500);
+      } else {
+        // Scroll to first error
+        const firstError = aduanForm.querySelector('.error');
+        if (firstError) {
+          firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          firstError.focus();
+        }
+      }
+    });
+
+    // ============================================
+    // SCROLL TO TOP
+    // ============================================
+    const scrollTopBtn = document.getElementById('scrollTop');
+
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 500) {
+        scrollTopBtn.classList.add('visible');
+      } else {
+        scrollTopBtn.classList.remove('visible');
+      }
+    });
+
+    scrollTopBtn.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    // ============================================
+    // SMOOTH SCROLL FOR ANCHOR LINKS
+    // ============================================
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          const offsetTop = target.offsetTop - 70;
+          window.scrollTo({
+            top: offsetTop,
+            behavior: 'smooth'
+          });
+        }
+      });
+    });
+  </script>
+</body>
+</html>
